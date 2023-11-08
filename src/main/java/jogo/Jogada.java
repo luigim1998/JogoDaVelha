@@ -42,80 +42,6 @@ public class Jogada {
 		this.setTabuleiro(new Tabuleiro(tabuleiro));
 	}
 
-	public int getColunaJogada() {
-		return colunaJogada;
-	}
-
-	public Jogada getJogadaAnterior() {
-		return jogadaAnterior;
-	}
-
-	public List<Jogada> getJogadasProximas() {
-		return jogadasProximas;
-	}
-
-	public int getLinhaJogada() {
-		return linhaJogada;
-	}
-
-	public Tabuleiro getTabuleiro() {
-		return tabuleiro;
-	}
-
-	public PecaEnum getJogadorAtual() {
-		return jogadorAtual;
-	}
-
-	public void setColunaJogada(int colunaJogada) {
-		this.colunaJogada = colunaJogada;
-	}
-
-	public void setJogadaAnterior(Jogada jogadaAnterior) {
-		this.jogadaAnterior = jogadaAnterior;
-	}
-
-	public void setJogadasProximas(List<Jogada> jogadasProximas) {
-		this.jogadasProximas = jogadasProximas;
-	}
-
-	public void setJogadorAtual(PecaEnum jogadorAtual) {
-		this.jogadorAtual = jogadorAtual;
-	}
-
-	public void setLinhaJogada(int linhaJogada) {
-		this.linhaJogada = linhaJogada;
-	}
-
-	public void setTabuleiro(Tabuleiro tabuleiro) {
-		this.tabuleiro = tabuleiro;
-
-		if (this.linhaJogada != -1 || this.colunaJogada != -1) {
-			if (this.tabuleiro.getPeca(this.linhaJogada, this.colunaJogada) != null) {
-				throw new IllegalArgumentException(
-						"Linha " + this.linhaJogada + " e coluna " + this.colunaJogada + " já foram preenchidas");
-			}
-			this.tabuleiro.setPeca(this.linhaJogada, this.colunaJogada, this.jogadorAtual);
-		}
-
-		this.vencedor = Jogada.verificarVitoria(this.tabuleiro);
-
-		switch (this.vencedor) {
-		case O:
-			this.pontosO++;
-			break;
-		case X:
-			this.pontosX++;
-			break;
-		case EMPATE:
-			this.pontosEmpate++;
-			break;
-		case NAO_FINALIZADO:
-			this.setJogadasProximas(this.preverProximasJogada());
-			this.contabilizarPontos();
-			break;
-		}
-	}
-
 	public static VencedorEnum verificarVitoria(Tabuleiro tabuleiro) {
 		for (int linha = 0; linha < 3; linha++) {
 			if (tabuleiro.getPeca(linha, 0) != null) {
@@ -161,37 +87,6 @@ public class Jogada {
 		return peca1 == peca2 && peca2 == peca3;
 	}
 
-	public List<Jogada> preverProximasJogada() {
-		List<Jogada> jogadas = new ArrayList<Jogada>();
-
-		for (int linha = 0; linha < this.tabuleiro.getMatriz().length; linha++) {
-			for (int coluna = 0; coluna < this.tabuleiro.getMatriz()[linha].length; coluna++) {
-				if (this.tabuleiro.getPeca(linha, coluna) == null) {
-					jogadas.add(new Jogada(this, PecaEnum.pecaOposta(jogadorAtual), linha, coluna));
-				}
-			}
-		}
-		return jogadas;
-	}
-
-	public void contabilizarPontos() {
-		for (Jogada jogo : this.jogadasProximas) {
-			this.pontosO += jogo.pontosO;
-			this.pontosX += jogo.pontosX;
-			this.pontosEmpate += jogo.pontosEmpate;
-		}
-	}
-
-	public Jogada selecionarProximaJogada(int linha, int coluna) {
-		Jogada novaJogada = null;
-		for (Jogada jogadaProxima : this.getJogadasProximas()) {
-			if (jogadaProxima.linhaJogada == linha && jogadaProxima.colunaJogada == coluna) {
-				novaJogada = jogadaProxima;
-			}
-		}
-		return novaJogada;
-	}
-
 	public int compararJogada(Jogada j1, Jogada j2) {
 		PecaEnum peca = j1.jogadorAtual;
 		
@@ -234,16 +129,139 @@ public class Jogada {
 		return ponto;
 	}
 
-	public double totalPontos() {
-		return this.pontosEmpate + this.pontosO + this.pontosX;
+	public void contabilizarPontos() {
+		this.pontosO = 0;
+		this.pontosX = 0;
+		this.pontosEmpate = 0;
+		for (Jogada jogo : this.jogadasProximas) {
+			this.pontosO += jogo.pontosO;
+			this.pontosX += jogo.pontosX;
+			this.pontosEmpate += jogo.pontosEmpate;
+		}
 	}
 	
+	public int getColunaJogada() {
+		return colunaJogada;
+	}
+
+	public Jogada getJogadaAnterior() {
+		return jogadaAnterior;
+	}
+
+	public List<Jogada> getJogadasProximas() {
+		return jogadasProximas;
+	}
+
+	public PecaEnum getJogadorAtual() {
+		return jogadorAtual;
+	}
+
+	public int getLinhaJogada() {
+		return linhaJogada;
+	}
+
+	public int getPontosEmpate() {
+		return pontosEmpate;
+	}
+
+	public int getPontosO() {
+		return pontosO;
+	}
+
+	public int getPontosX() {
+		return pontosX;
+	}
+
+	public Tabuleiro getTabuleiro() {
+		return tabuleiro;
+	}
+
+	public List<Jogada> preverProximasJogada() {
+		List<Jogada> jogadas = new ArrayList<Jogada>();
+
+		for (int linha = 0; linha < this.tabuleiro.getMatriz().length; linha++) {
+			for (int coluna = 0; coluna < this.tabuleiro.getMatriz()[linha].length; coluna++) {
+				if (this.tabuleiro.getPeca(linha, coluna) == null) {
+					jogadas.add(new Jogada(this, PecaEnum.pecaOposta(jogadorAtual), linha, coluna));
+				}
+			}
+		}
+		return jogadas;
+	}
+
 	public Jogada selecionarMelhorJogada() {
 		this.jogadasProximas.sort((j1, j2) -> this.compararJogada(j1, j2));
 		
 		return this.jogadasProximas.get(0);
 	}
 
+	public Jogada selecionarProximaJogada(int linha, int coluna) {
+		Jogada novaJogada = null;
+		for (Jogada jogadaProxima : this.getJogadasProximas()) {
+			if (jogadaProxima.linhaJogada == linha && jogadaProxima.colunaJogada == coluna) {
+				novaJogada = jogadaProxima;
+			}
+		}
+		return novaJogada;
+	}
+
+	public void setColunaJogada(int colunaJogada) {
+		this.colunaJogada = colunaJogada;
+	}
+
+	public void setJogadaAnterior(Jogada jogadaAnterior) {
+		this.jogadaAnterior = jogadaAnterior;
+	}
+
+	public void setJogadasProximas(List<Jogada> jogadasProximas) {
+		this.jogadasProximas = jogadasProximas;
+	}
+
+	public void setJogadorAtual(PecaEnum jogadorAtual) {
+		this.jogadorAtual = jogadorAtual;
+	}
+
+	public void setLinhaJogada(int linhaJogada) {
+		this.linhaJogada = linhaJogada;
+	}
+
+	public void setTabuleiro(Tabuleiro tabuleiro) {
+		this.tabuleiro = new Tabuleiro( tabuleiro);
+
+		if (this.linhaJogada != -1 && this.colunaJogada != -1) {
+			if (this.tabuleiro.getPeca(this.linhaJogada, this.colunaJogada) != null) {
+				throw new IllegalArgumentException(
+						"Linha " + this.linhaJogada + " e coluna " + this.colunaJogada + " já foram preenchidas");
+			} else {
+			this.tabuleiro.setPeca(this.linhaJogada, this.colunaJogada, this.jogadorAtual);
+			}
+		}
+
+		this.vencedor = Jogada.verificarVitoria(this.tabuleiro);
+
+		switch (this.vencedor) {
+		case O:
+			this.pontosO = 1;
+			this.pontosX = 0;
+			this.pontosEmpate = 0;
+			break;
+		case X:
+			this.pontosO = 0;
+			this.pontosX = 1;
+			this.pontosEmpate = 0;
+			break;
+		case EMPATE:
+			this.pontosO = 0;
+			this.pontosX = 0;
+			this.pontosEmpate = 1;
+			break;
+		case NAO_FINALIZADO:
+			this.setJogadasProximas(this.preverProximasJogada());
+			this.contabilizarPontos();
+			break;
+		}
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
@@ -253,5 +271,9 @@ public class Jogada {
 				.append(pontosEmpate).append(", pontosO=").append(pontosO).append(", pontosX=").append(pontosX)
 				.append("]");
 		return builder.toString();
+	}
+
+	public double totalPontos() {
+		return this.pontosEmpate + this.pontosO + this.pontosX;
 	}
 }

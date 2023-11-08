@@ -4,9 +4,11 @@ import java.util.Scanner;
 
 import jogo.Jogada;
 import jogo.PecaEnum;
+import jogo.Tabuleiro;
 
 public class App {
 
+	/**
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		PecaEnum pecaJogador = UI.lerPecaEscolhida(sc);
@@ -30,5 +32,15 @@ public class App {
 		}
 		UI.imprimirPartida(jogo);
 		System.out.println("Vitória de: " + jogo.getJogadorAtual());
+	}
+	**/
+	
+	public static void main(String[] args) {
+		Tabuleiro t1 = new Tabuleiro();
+		t1.setPeca(0, 0, PecaEnum.X);
+		t1.setPeca(1, 0, PecaEnum.X);
+		t1.setPeca(2, 0, PecaEnum.X);
+		Jogada j1 = new Jogada(t1, PecaEnum.O);
+		System.out.println("Empate: " + j1.getPontosEmpate() + "  O: " + j1.getPontosO() + "  X: " + j1.getPontosX());
 	}
 }
