@@ -18,10 +18,8 @@ class TabuleiroTest {
 	@Test
 	void testTabuleiroCopia() {
 		Tabuleiro tab = new Tabuleiro();
-		tab.setPeca(0, 0, PecaEnum.O);
-		tab.setPeca(0, 1, PecaEnum.X);
-		tab.setPeca(1, 0, PecaEnum.O);
-		tab.setPeca(1, 2, PecaEnum.X);
+		tab.setPeca(0, 0, PecaEnum.O).setPeca(0, 1, PecaEnum.X);
+		tab.setPeca(1, 0, PecaEnum.O).setPeca(1, 2, PecaEnum.X);
 		tab.setPeca(2, 0, PecaEnum.O);
 		Tabuleiro tabCopia = new Tabuleiro(tab);
 		assertAll("Peças devem ser iguais",

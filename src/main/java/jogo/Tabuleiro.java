@@ -1,5 +1,10 @@
 package jogo;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringJoiner;
+
 public class Tabuleiro {
 	private PecaEnum[][] matriz;
 	
@@ -35,7 +40,48 @@ public class Tabuleiro {
 		return this.matriz[linha][coluna];
 	}
 	
-	public void setPeca(int linha, int coluna, PecaEnum peca) {
+	public Tabuleiro setPeca(int linha, int coluna, PecaEnum peca) {
 		this.matriz[linha][coluna] = peca;
+		return this;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Arrays.deepHashCode(matriz);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Tabuleiro other = (Tabuleiro) obj;
+		return Arrays.deepEquals(matriz, other.matriz);
+	}
+
+	@Override
+	public String toString() {
+		StringJoiner texto = new StringJoiner(",");
+		List<StringBuilder> linhas = new ArrayList<StringBuilder>();
+
+		for (int linha = 0; linha < matriz.length; linha++) {
+			linhas.add(new StringBuilder(3));
+			for (int peca = 0; peca < matriz[linha].length; peca++) {
+				linhas.get(linha).append(imprimirPeca(linha, peca));
+			}
+		}
+		linhas.stream().map(t -> t.toString()).forEach(t -> texto.add(t));
+
+		return "[" + texto.toString() + "]";
+	}
+	
+	public String imprimirPeca(int linha, int coluna) {
+		return matriz[linha][coluna] == null ? "-" : matriz[linha][coluna].toString();
+	};
 }
