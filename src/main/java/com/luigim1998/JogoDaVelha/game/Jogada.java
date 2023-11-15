@@ -1,9 +1,7 @@
-package jogo;
+package com.luigim1998.JogoDaVelha.game;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.luigim1998.JogoDaVelha.UI;
 
 public class Jogada implements Comparable<Jogada>{
 

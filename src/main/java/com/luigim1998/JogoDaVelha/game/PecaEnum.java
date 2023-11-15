@@ -1,4 +1,4 @@
-package jogo;
+package com.luigim1998.JogoDaVelha.game;
 
 public enum PecaEnum {
 	X,

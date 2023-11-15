@@ -1,4 +1,4 @@
-package com.luigim1998.JogoDaVelha;
+package com.luigim1998.JogoDaVelha.application;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

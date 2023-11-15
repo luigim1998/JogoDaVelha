@@ -1,4 +1,4 @@
-package com.luigim1998.JogoDaVelha;
+package com.luigim1998.JogoDaVelha.application;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -12,9 +12,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import jogo.Jogada;
-import jogo.PecaEnum;
-import jogo.Tabuleiro;
+import com.luigim1998.JogoDaVelha.game.Jogada;
+import com.luigim1998.JogoDaVelha.game.PecaEnum;
+import com.luigim1998.JogoDaVelha.game.Tabuleiro;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class UITest {

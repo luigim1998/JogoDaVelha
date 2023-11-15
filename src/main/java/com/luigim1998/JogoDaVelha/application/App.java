@@ -1,13 +1,13 @@
-package com.luigim1998.JogoDaVelha;
+package com.luigim1998.JogoDaVelha.application;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import jogo.Jogada;
-import jogo.PecaEnum;
-import jogo.Tabuleiro;
+import com.luigim1998.JogoDaVelha.game.Jogada;
+import com.luigim1998.JogoDaVelha.game.PecaEnum;
+import com.luigim1998.JogoDaVelha.game.Tabuleiro;
 
 public class App {
 	
