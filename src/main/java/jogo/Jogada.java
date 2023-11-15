@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.luigim1998.JogoDaVelha.UI;
 
-public class Jogada {
+public class Jogada implements Comparable<Jogada>{
 
 	private Tabuleiro tabuleiro;
 	private PecaEnum jogadorAtual;
@@ -18,13 +18,13 @@ public class Jogada {
 	private int pontosO = 0;
 	private int pontosX = 0;
 
-	Jogada(Jogada jogoAnterior, PecaEnum jogador, int linha, int coluna) {
+	private Jogada(Jogada jogoAnterior, PecaEnum jogador, int linha, int coluna) {
+		this.jogadaAnterior = jogoAnterior;
 		this.jogadorAtual = jogador;
-		this.setLinhaJogada(linha);
-		this.setColunaJogada(coluna);
-		this.setJogadaAnterior(jogoAnterior);
-		this.setJogadasProximas(new ArrayList<Jogada>());
-
+		this.linhaJogada = linha;
+		this.colunaJogada = coluna;
+		this.jogadasProximas = new ArrayList<Jogada>();
+		
 		if (jogoAnterior == null) {
 			this.setTabuleiro(new Tabuleiro());
 		} else {
@@ -37,7 +37,11 @@ public class Jogada {
 	}
 
 	public Jogada(Tabuleiro tabuleiro, PecaEnum jogador) {
-		this(null, PecaEnum.pecaOposta(jogador), -1, -1);
+		this.jogadaAnterior = null;
+		this.jogadorAtual = PecaEnum.pecaOposta(jogador);
+		this.linhaJogada = -1;
+		this.colunaJogada = -1;
+		this.jogadasProximas = new ArrayList<Jogada>();
 
 		this.setTabuleiro(new Tabuleiro(tabuleiro));
 	}
@@ -45,8 +49,7 @@ public class Jogada {
 	public static VencedorEnum verificarVitoria(Tabuleiro tabuleiro) {
 		for (int linha = 0; linha < 3; linha++) {
 			if (tabuleiro.getPeca(linha, 0) != null) {
-				if (Jogada.verificaTresIguais(tabuleiro.getPeca(linha, 0), tabuleiro.getPeca(linha, 1),
-						tabuleiro.getPeca(linha, 2))) {
+				if (Jogada.verificaTresIguais(tabuleiro.getPeca(linha, 0), tabuleiro.getPeca(linha, 1), tabuleiro.getPeca(linha, 2))) {
 					return tabuleiro.getPeca(linha, 0) == PecaEnum.O ? VencedorEnum.O : VencedorEnum.X;
 				}
 			}
@@ -54,8 +57,7 @@ public class Jogada {
 
 		for (int coluna = 0; coluna < 3; coluna++) {
 			if (tabuleiro.getPeca(0, coluna) != null) {
-				if (Jogada.verificaTresIguais(tabuleiro.getPeca(0, coluna), tabuleiro.getPeca(1, coluna),
-						tabuleiro.getPeca(2, coluna))) {
+				if (Jogada.verificaTresIguais(tabuleiro.getPeca(0, coluna), tabuleiro.getPeca(1, coluna), tabuleiro.getPeca(2, coluna))) {
 					return tabuleiro.getPeca(0, coluna) == PecaEnum.O ? VencedorEnum.O : VencedorEnum.X;
 				}
 			}
@@ -85,48 +87,6 @@ public class Jogada {
 
 	public static boolean verificaTresIguais(PecaEnum peca1, PecaEnum peca2, PecaEnum peca3) {
 		return peca1 == peca2 && peca2 == peca3;
-	}
-
-	public int compararJogada(Jogada j1, Jogada j2) {
-		PecaEnum peca = j1.jogadorAtual;
-		
-		int ponto = 0;
-
-		double j1JogadaX = j1.pontosX / j1.totalPontos();
-		double j1JogadaO = j1.pontosO / j1.totalPontos();
-		double j2JogadaX = j2.pontosX / j2.totalPontos();
-		double j2JogadaO = j2.pontosO / j2.totalPontos();
-
-		if (peca == PecaEnum.O) {
-			if (j1JogadaO < j2JogadaO) {
-				ponto = -1;
-			} else if (j1JogadaO > j2JogadaO) {
-				ponto = 1;
-			} else {
-				if (j1JogadaX < j2JogadaX) {
-					ponto = 1;
-				} else if (j1JogadaX > j2JogadaX) {
-					ponto = -1;
-				} else {
-					ponto = 0;
-				}
-			}
-		} else {
-			if (j1JogadaX < j2JogadaX) {
-				ponto = -1;
-			} else if (j1JogadaX > j2JogadaX) {
-				ponto = 1;
-			} else {
-				if (j1JogadaO < j2JogadaO) {
-					ponto = 1;
-				} else if (j1JogadaO > j2JogadaO) {
-					ponto = -1;
-				} else {
-					ponto = 0;
-				}
-			}
-		}
-		return ponto;
 	}
 
 	public void contabilizarPontos() {
@@ -176,6 +136,10 @@ public class Jogada {
 		return tabuleiro;
 	}
 
+	public VencedorEnum getVencedor() {
+		return vencedor;
+	}
+
 	public List<Jogada> preverProximasJogada() {
 		List<Jogada> jogadas = new ArrayList<Jogada>();
 
@@ -190,11 +154,12 @@ public class Jogada {
 	}
 
 	public Jogada selecionarMelhorJogada() {
-		this.jogadasProximas.sort((j1, j2) -> this.compararJogada(j1, j2));
-		
-		return this.jogadasProximas.get(0);
+		ArrayList<Jogada> jogadasOrdenadas = new ArrayList<Jogada>(this.jogadasProximas);
+		jogadasOrdenadas.sort(null);
+		return jogadasOrdenadas.get(jogadasOrdenadas.size() - 1);
 	}
 
+	
 	public Jogada selecionarProximaJogada(int linha, int coluna) {
 		Jogada novaJogada = null;
 		for (Jogada jogadaProxima : this.getJogadasProximas()) {
@@ -203,26 +168,6 @@ public class Jogada {
 			}
 		}
 		return novaJogada;
-	}
-
-	public void setColunaJogada(int colunaJogada) {
-		this.colunaJogada = colunaJogada;
-	}
-
-	public void setJogadaAnterior(Jogada jogadaAnterior) {
-		this.jogadaAnterior = jogadaAnterior;
-	}
-
-	public void setJogadasProximas(List<Jogada> jogadasProximas) {
-		this.jogadasProximas = jogadasProximas;
-	}
-
-	public void setJogadorAtual(PecaEnum jogadorAtual) {
-		this.jogadorAtual = jogadorAtual;
-	}
-
-	public void setLinhaJogada(int linhaJogada) {
-		this.linhaJogada = linhaJogada;
 	}
 
 	public void setTabuleiro(Tabuleiro tabuleiro) {
@@ -256,7 +201,7 @@ public class Jogada {
 			this.pontosEmpate = 1;
 			break;
 		case NAO_FINALIZADO:
-			this.setJogadasProximas(this.preverProximasJogada());
+			this.jogadasProximas = this.preverProximasJogada();
 			this.contabilizarPontos();
 			break;
 		}
@@ -265,15 +210,62 @@ public class Jogada {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Jogada [tabuleiro=").append(UI.imprimirTabuleiroLinhaUnica(this, 0)).append(", jogadorAtual=")
+		builder.append("Jogada [tabuleiro=").append(this.tabuleiro).append(", jogadorAtual=")
 				.append(jogadorAtual).append(", linhaJogada=").append(linhaJogada).append(", colunaJogada=")
 				.append(colunaJogada).append(", vencedor=").append(vencedor).append(", pontosEmpate=")
 				.append(pontosEmpate).append(", pontosO=").append(pontosO).append(", pontosX=").append(pontosX)
+				.append(", Vitória O: ").append(String.format("%,.2f", this.pontosO/this.totalPontos()))
+				.append(", Vitória X: ").append(String.format("%,.2f", this.pontosX/this.totalPontos()))
 				.append("]");
 		return builder.toString();
 	}
 
 	public double totalPontos() {
 		return this.pontosEmpate + this.pontosO + this.pontosX;
+	}
+
+
+	@Override
+	public int compareTo(Jogada j2) {
+		PecaEnum peca = this.jogadorAtual;
+		
+		int ponto = 0;
+
+		double j1JogadaX = this.pontosX / this.totalPontos();
+		double j1JogadaO = this.pontosO / this.totalPontos();
+		double j2JogadaX = j2.pontosX / j2.totalPontos();
+		double j2JogadaO = j2.pontosO / j2.totalPontos();
+
+		if (peca == PecaEnum.O) {
+			if (j1JogadaO < j2JogadaO) {
+				ponto = -1;
+			} else if (j1JogadaO > j2JogadaO) {
+				ponto = 1;
+			} else {
+				if (j1JogadaX < j2JogadaX) {
+					ponto = 1;
+				} else if (j1JogadaX > j2JogadaX) {
+					ponto = -1;
+				} else {
+					ponto = 0;
+				}
+			}
+		} else {
+			if (j1JogadaX < j2JogadaX) {
+				ponto = -1;
+			} else if (j1JogadaX > j2JogadaX) {
+				ponto = 1;
+			} else {
+				if (j1JogadaO < j2JogadaO) {
+					ponto = 1;
+				} else if (j1JogadaO > j2JogadaO) {
+					ponto = -1;
+				} else {
+					ponto = 0;
+				}
+			}
+		}
+		return ponto;
+
 	}
 }
