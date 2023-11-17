@@ -76,11 +76,16 @@ class JogadaTest {
 	void testSelecionarMelhorJogada() {
 		Tabuleiro t1 = new Tabuleiro();
 		t1.setPeca(0, 0, PecaEnum.X);
+		Jogada j1 = new Jogada(t1, PecaEnum.O);
+		System.out.println(j1);
+		System.out.println();
+		
 		Tabuleiro t2 = new Tabuleiro();
 		t2.setPeca(0, 0, PecaEnum.X).setPeca(1, 1, PecaEnum.O);
-		Jogada j1 = new Jogada(t1, PecaEnum.O);
-		j1 = j1.selecionarMelhorJogada();
-		assertEquals(t2, j1.getTabuleiro());
+		
+		System.out.println(j1.getJogadasProximas());
+		System.out.println();
+		assertEquals(t2, j1.selecionarMelhorJogada().getTabuleiro());
 	}
 	
 	@Test
@@ -88,8 +93,12 @@ class JogadaTest {
 		Tabuleiro t1 = new Tabuleiro();
 		t1.setPeca(0, 1, PecaEnum.X).setPeca(1, 2, PecaEnum.O);
 		Jogada j1 = new Jogada(t1, PecaEnum.O);
+		
 		Tabuleiro t2 = new Tabuleiro(t1);
 		t2.setPeca(1, 1, PecaEnum.O);
+		
+		System.out.println(j1.getJogadasProximas().toString());
+		System.out.println();
 		assertEquals(t2, j1.selecionarMelhorJogada().getTabuleiro());
 	}
 

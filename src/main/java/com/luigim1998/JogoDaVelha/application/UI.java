@@ -1,15 +1,21 @@
 package com.luigim1998.JogoDaVelha.application;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-import java.util.StringJoiner;
 
 import com.luigim1998.JogoDaVelha.game.Jogada;
 import com.luigim1998.JogoDaVelha.game.PecaEnum;
 import com.luigim1998.JogoDaVelha.game.Tabuleiro;
 
+/**
+ * Classe com funções utilitárias para gerar texto.
+ */
 public class UI {
+
+	/** Converte a entrada em um vetor de coordenadas [linha, coluna]. Retorna [-1, -1], caso a entrada seja inválida.
+	 * 
+	 * @param entrada Texto onde o primeiro caractere é o número da linha e depois  letra sendo a coluna (a=0, b=1, c=2).
+	 * @return Par de coordenadas onde o primeiro elemento é a linha e o segundo é a coluna. Retorna [-1, -1], caso a entrada seja inválida.
+	 */
 	public static int[] converterEntradaCoord(String entrada) {
 		int[] coord = new int[2];
 		try {
@@ -30,6 +36,10 @@ public class UI {
 		return coord;
 	}
 
+	/** Retorna PecaEnum.X caso o caractere seja 'x', retorna PecaEnum.O caso o caractere seja 'o' e null caso seja outro caractere.
+	 * @param c Caractere de entrada.
+	 * @return um enum PecaEnum ou null.
+	 */
 	public static PecaEnum converterEntradaPeca(char c) {
 		switch (c) {
 		case 'x':
@@ -41,6 +51,15 @@ public class UI {
 		}
 	}
 
+	/** Imprime o tabuleiro da jogada no seguinte modelo:
+	 * 2 X - O
+	 * 1 - X O
+	 * 0 - O X
+	 *   a b c
+	 * 
+	 * @param jogada Jogada a ser gerada o texto da partida.
+	 * @return Texto da partida.
+	 */
 	public static String imprimirPartida(Jogada jogada) {
 		StringBuilder texto = new StringBuilder(40);
 		Tabuleiro tab = jogada.getTabuleiro();
@@ -57,6 +76,14 @@ public class UI {
 		return texto.toString();
 	}
 
+	/** Imprime tabuleiro da jogada colocando identação no seguinte modelo:
+	 * X O -
+	 * O X O
+	 * X - X
+	 * @param jogada Jogada a ser gerada o texto do tabuleiro.
+	 * @param indentacao Tamanho do espaço a ser colocado antes de cada linha.
+	 * @return Texto do tabuleiro.
+	 */
 	public static String imprimirTabuleiro(Jogada jogada, int indentacao) {
 		StringBuilder texto = new StringBuilder(40);
 		Tabuleiro tab = jogada.getTabuleiro();
@@ -71,35 +98,11 @@ public class UI {
 
 		return texto.toString();
 	}
-	
-	public static String imprimirTabuleiroLinhaUnica(Jogada jogada, int indentacao) {
-		StringJoiner texto = new StringJoiner(",");
-		Tabuleiro tab = jogada.getTabuleiro();
-		List<StringBuilder> linhas = new ArrayList<StringBuilder>();
 
-		for (int linha = 0; linha < tab.getMatriz().length; linha++) {
-			linhas.add(new StringBuilder(3));
-			for (int peca = 0; peca < tab.getMatriz()[linha].length; peca++) {
-				linhas.get(linha).append(tab.imprimirPeca(linha, peca));
-			}
-		}
-		linhas.stream().map(t -> t.toString()).forEach(t -> texto.add(t));
-
-		return " ".repeat(indentacao) + "[" + texto.toString() + "]";
-	}
-
-	public static String imprimirTabuleiroRecursivo(Jogada jogada, int indentacao) {
-		StringBuilder texto = new StringBuilder();
-		texto.append(" ".repeat(indentacao)).append("Jogador Atual: ").append(jogada.getJogadorAtual());
-		texto.append("\n");
-		texto.append(imprimirTabuleiro(jogada, indentacao));
-		for (Jogada jogFilho : jogada.getJogadasProximas()) {
-			texto.append(imprimirTabuleiroRecursivo(jogFilho, indentacao + 2));
-		}
-
-		return texto.toString();
-	}
-
+	/** Solicita do usuário a coordenada e retorna as coordenadas com base no método  converterEntradaCoord, caso a entrada seja inválida, será solicatada nova entrada até obter entrada válida.
+	 * @param sc Objeto Scanner.
+	 * @return Par de coordenadas onde o primeiro elemento é a linha e o segundo é a coluna.
+	 */
 	public static int[] lerCoordenada(Scanner sc) {
 		int[] coord = new int[2];
 		while (true) {
@@ -121,6 +124,10 @@ public class UI {
 		return coord;
 	}
 
+	/** Solicita do usuário uma peça e retorna a peça com base no método  converterEntradaPeca, caso a entrada seja inválida, será solicatada nova entrada até obter entrada válida.
+	 * @param sc Objeto Scanner.
+	 * @return Objeto PecaEnum.
+	 */
 	public static PecaEnum lerPecaEscolhida(Scanner sc) {
 		while (true) {
 			try {
@@ -136,6 +143,10 @@ public class UI {
 		}
 	}
 
+	/** Pergunta se o usuário quer jogar primeiro, True se for 's' ou False para 'n'.
+	 * @param sc Objeto Scanner.
+	 * @return True se for 's' ou False para 'n'.
+	 */
 	public static boolean usuarioJogaPrimeiro(Scanner sc) {
 		boolean escolha = false;
 		while (true) {

@@ -2,7 +2,6 @@ package com.luigim1998.JogoDaVelha.application;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -48,21 +47,6 @@ Jogada jogada;
 	@Test
 	void testImprimirTabuleiroIndentado() {
 		assertEquals("  XOX\n  OXO\n  ---\n", UI.imprimirTabuleiro(jogada, 2));
-	}
-
-	@Test
-	void testImprimirTabuleiroLinhaUnica() {
-		assertEquals("[XOX,OXO,---]", UI.imprimirTabuleiroLinhaUnica(jogada, 0));
-	}
-	
-	@Test
-	void testImprimirTabuleiroLinhaUnicaIndentado() {
-		assertEquals("  [XOX,OXO,---]", UI.imprimirTabuleiroLinhaUnica(jogada, 2));
-	}
-
-	@Test
-	void testImprimirTabuleiroRecursivo() {
-		assertDoesNotThrow(() -> UI.imprimirTabuleiroRecursivo(jogada, 0));
 	}
 	
 	void testConverterEntradaPeca() {

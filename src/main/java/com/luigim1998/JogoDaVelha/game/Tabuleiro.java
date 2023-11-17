@@ -5,13 +5,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 
+/**
+ * Objeto que representa o tabuleiro da jogada.
+ */
 public class Tabuleiro {
 	private PecaEnum[][] matriz;
 	
+	/**
+	 * Cria um tabuleiro 3x3 de valores null.
+	 */
 	public Tabuleiro() {
 		this.matriz = new PecaEnum[3][3];
 	}
 	
+	/**
+	 * Cria um tabuleiro 3x3 copiando o tabuleiro no parâmetro.
+	 * @param original Tabuleiro original para ser copiado.
+	 */
 	public Tabuleiro(Tabuleiro original) {
 		this.matriz = new PecaEnum[3][3];
 
@@ -22,10 +32,16 @@ public class Tabuleiro {
 		}
 	}
 
+	/** Retorna a matriz do tabuleiro.
+	 * @return Matriz do tabuleiro.
+	 */
 	public PecaEnum[][] getMatriz() {
 		return this.matriz;
 	}
 
+	/** Muda a matriz do tabuleiro pela matriz no parâmetro, sem criar cópia da matriz.
+	 * @param matrizPecas Nova matriz.
+	 */
 	public void setMatriz(PecaEnum[][] matrizPecas) {
 		if (matrizPecas.length != 3) {
 			throw new IllegalArgumentException("A matriz não pode ter uma quantidade diferente de três linhas.");
@@ -36,10 +52,21 @@ public class Tabuleiro {
 		this.matriz = matrizPecas;
 	}
 	
+	/** Retorna a PecaEnum da linha e coluna dada no parâmetro.
+	 * @param linha Linha do tabuleiro.
+	 * @param coluna Coluna do tabuleiro.
+	 * @return PecaEnum da linha e coluna dada.
+	 */
 	public PecaEnum getPeca(int linha, int coluna) {
 		return this.matriz[linha][coluna];
 	}
 	
+	/** Muda a PecaEnum da linha e coluna dada no parâmetro pela PecaEnum no parâmetro.
+	 * @param linha Linha do tabuleiro.
+	 * @param coluna Coluna do tabuleiro.
+	 * @param peca Nova PecaEnum.
+	 * @return Referência do tabuleiro.
+	 */
 	public Tabuleiro setPeca(int linha, int coluna, PecaEnum peca) {
 		this.matriz[linha][coluna] = peca;
 		return this;
@@ -81,6 +108,11 @@ public class Tabuleiro {
 		return "[" + texto.toString() + "]";
 	}
 	
+	/** Imprime a peça da linha e coluna dada nos parâmetros, se o objeto na coordenada for null, retorna '-'.
+	 * @param linha Linha do tabuleiro.
+	 * @param coluna Coluna do tabuleiro.
+	 * @return Retorna texto da peça.
+	 */
 	public String imprimirPeca(int linha, int coluna) {
 		return matriz[linha][coluna] == null ? "-" : matriz[linha][coluna].toString();
 	};
