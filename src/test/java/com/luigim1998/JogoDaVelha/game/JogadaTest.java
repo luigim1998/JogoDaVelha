@@ -35,9 +35,9 @@ class JogadaTest {
 		t1.setPeca(1, 0, PecaEnum.X);
 		t1.setPeca(2, 0, PecaEnum.X);
 		Jogada j1 = new Jogada(t1, PecaEnum.O);
-		assertAll( () -> assertEquals(j1.getPontosO(), 0),
-				() -> assertEquals(j1.getPontosX(), 1),
-				() -> assertEquals(j1.getPontosEmpate(), 0)
+		assertAll( () -> assertEquals(j1.getPontosO(), 0, "Pontos O"),
+				() -> assertEquals(j1.getPontosX(), 1, "Pontos X"),
+				() -> assertEquals(j1.getPontosEmpate(), 0, "Pontos Empate")
 				);
 	}
 	
@@ -48,9 +48,9 @@ class JogadaTest {
 		t1.setPeca(0, 1, PecaEnum.O);
 		t1.setPeca(0, 2, PecaEnum.O);
 		Jogada j1 = new Jogada(t1, PecaEnum.O);
-		assertAll( () -> assertEquals(j1.getPontosO(), 1),
-				() -> assertEquals(j1.getPontosX(), 0),
-				() -> assertEquals(j1.getPontosEmpate(), 0)
+		assertAll( () -> assertEquals(j1.getPontosO(), 1, "Pontos O"),
+				() -> assertEquals(j1.getPontosX(), 0, "Pontos X"),
+				() -> assertEquals(j1.getPontosEmpate(), 0, "Pontos Empate")
 				);
 	}
 	@Test
@@ -66,9 +66,9 @@ class JogadaTest {
 		t1.setPeca(2, 1, PecaEnum.O);
 		t1.setPeca(2, 2, PecaEnum.X);
 		Jogada j1 = new Jogada(t1, PecaEnum.O);
-		assertAll( () -> assertEquals(j1.getPontosO(), 0),
-				() -> assertEquals(j1.getPontosX(), 0),
-				() -> assertEquals(j1.getPontosEmpate(), 1)
+		assertAll( () -> assertEquals(j1.getPontosO(), 0, "Pontos O"),
+				() -> assertEquals(j1.getPontosX(), 0, "Pontos X"),
+				() -> assertEquals(j1.getPontosEmpate(), 1, "Pontos Empate")
 				);
 	}
 	
@@ -77,14 +77,10 @@ class JogadaTest {
 		Tabuleiro t1 = new Tabuleiro();
 		t1.setPeca(0, 0, PecaEnum.X);
 		Jogada j1 = new Jogada(t1, PecaEnum.O);
-		System.out.println(j1);
-		System.out.println();
 		
 		Tabuleiro t2 = new Tabuleiro();
 		t2.setPeca(0, 0, PecaEnum.X).setPeca(1, 1, PecaEnum.O);
 		
-		System.out.println(j1.getJogadasProximas());
-		System.out.println();
 		assertEquals(t2, j1.selecionarMelhorJogada().getTabuleiro());
 	}
 	
@@ -96,51 +92,73 @@ class JogadaTest {
 		
 		Tabuleiro t2 = new Tabuleiro(t1);
 		t2.setPeca(1, 1, PecaEnum.O);
-		
-		System.out.println(j1.getJogadasProximas().toString());
-		System.out.println();
+
 		assertEquals(t2, j1.selecionarMelhorJogada().getTabuleiro());
 	}
 
 	@Test
-	void testVerificarVitoria() {
+	void testVerificarVitoria1() {
 		Tabuleiro t1 = new Tabuleiro();
 		t1.setPeca(0, 0, PecaEnum.X).setPeca(0, 1, PecaEnum.X).setPeca(0, 2, PecaEnum.X);
 		t1.setPeca(1, 1, PecaEnum.O);
 		t1.setPeca(2, 2, PecaEnum.O);
+		assertEquals(Jogada.verificarVitoria(t1), VencedorEnum.X);
+	}
+	
+	@Test
+	void testVerificarVitoria2() {
 		Tabuleiro t2 = new Tabuleiro();
 		t2.setPeca(0, 1, PecaEnum.O).setPeca(1, 1, PecaEnum.O);
 		t2.setPeca(1, 0, PecaEnum.X);
 		t2.setPeca(2, 1, PecaEnum.O).setPeca(2, 2, PecaEnum.X);
+		assertEquals(Jogada.verificarVitoria(t2), VencedorEnum.O);
+	}
+	
+	@Test
+	void testVerificarVitoria3() {
 		Tabuleiro t3 = new Tabuleiro();
 		t3.setPeca(0, 0, PecaEnum.O).setPeca(0, 2, PecaEnum.X);
 		t3.setPeca(1, 1, PecaEnum.O);
 		t3.setPeca(2, 0, PecaEnum.X).setPeca(2, 2, PecaEnum.O);
+		assertEquals(Jogada.verificarVitoria(t3), VencedorEnum.O);
+	}
+	
+	@Test
+	void testVerificarVitoria4() {
 		Tabuleiro t4 = new Tabuleiro();
 		t4.setPeca(0, 0, PecaEnum.O).setPeca(0, 2, PecaEnum.X);
 		t4.setPeca(1, 1, PecaEnum.X);
 		t4.setPeca(2, 0, PecaEnum.X).setPeca(2, 2, PecaEnum.O);
+		assertEquals(Jogada.verificarVitoria(t4), VencedorEnum.X);
+	}
+	
+	@Test
+	void testVerificarVitoria5() {
 		Tabuleiro t5 = new Tabuleiro();
 		t5.setPeca(0, 0, PecaEnum.O).setPeca(0, 2, PecaEnum.X);
 		t5.setPeca(1, 2, PecaEnum.X);
 		t5.setPeca(2, 0, PecaEnum.X).setPeca(2, 2, PecaEnum.O);
+		assertEquals(Jogada.verificarVitoria(t5), VencedorEnum.NAO_FINALIZADO);
+	}
+	
+	@Test
+	void testVerificarVitoria6() {
 		Tabuleiro t6 = new Tabuleiro();
 		t6.setPeca(0, 0, PecaEnum.O).setPeca(0, 1, PecaEnum.X).setPeca(0, 2, PecaEnum.O);//OXO
 		t6.setPeca(1, 0, PecaEnum.X).setPeca(1, 1, PecaEnum.O).setPeca(1, 2, PecaEnum.X);
 		t6.setPeca(2, 0, PecaEnum.X).setPeca(2, 1, PecaEnum.O).setPeca(2, 2, PecaEnum.X);
+		assertEquals(Jogada.verificarVitoria(t6), VencedorEnum.EMPATE);
+	}
+	
+	@Test
+	void testVerificarVitoria7() {
 		Tabuleiro t7 = new Tabuleiro();
 		t7.setPeca(0, 0, PecaEnum.X);
 		t7.setPeca(1, 0, PecaEnum.X);
 		t7.setPeca(2, 0, PecaEnum.X);
-		assertAll(() -> assertEquals(Jogada.verificarVitoria(t1), VencedorEnum.X),
-				() -> assertEquals(Jogada.verificarVitoria(t2), VencedorEnum.O),
-				() -> assertEquals(Jogada.verificarVitoria(t3), VencedorEnum.O),
-				() -> assertEquals(Jogada.verificarVitoria(t4), VencedorEnum.X),
-				() -> assertEquals(Jogada.verificarVitoria(t5), VencedorEnum.NAO_FINALIZADO),
-				() -> assertEquals(Jogada.verificarVitoria(t6), VencedorEnum.EMPATE),
-				() -> assertEquals(Jogada.verificarVitoria(t7), VencedorEnum.X)
-				);
+		assertEquals(Jogada.verificarVitoria(t7), VencedorEnum.X);
 	}
+
 	
 	@Test
 	void testCompararResultados() {
@@ -162,12 +180,12 @@ class JogadaTest {
 		Jogada j2X = new Jogada(t4, PecaEnum.O);
 		
 		
-		assertAll( () -> assertEquals(j1O.compareTo(j2O), -1),
-				() -> assertEquals(j2O.compareTo(j1O), 1),
-				() -> assertEquals(j1X.compareTo(j2X), -1),
-				() -> assertEquals(j2X.compareTo(j1X), 1),
-				() -> assertEquals(j1O.compareTo(j1O), 0),
-				() -> assertEquals(j2X.compareTo(j2X), 0));
+		assertAll( () -> assertEquals(j1O.compareTo(j2O), -1, "[j1O,j2O]=-1"),
+				() -> assertEquals(j2O.compareTo(j1O),  1, "[j2O,j1O]=1"),
+				() -> assertEquals(j1X.compareTo(j2X), -1, "[j1X,j2X]=-1"),
+				() -> assertEquals(j2X.compareTo(j1X),  1, "[j2X,j1X]=1"),
+				() -> assertEquals(j1O.compareTo(j1O),  0, "[j1O,j1O]=0"),
+				() -> assertEquals(j2X.compareTo(j2X),  0, "[j2X,j2X]=0"));
 	}
 	
 	@Test

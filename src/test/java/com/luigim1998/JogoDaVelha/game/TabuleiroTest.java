@@ -23,13 +23,13 @@ class TabuleiroTest {
 		tab.setPeca(2, 0, PecaEnum.O);
 		Tabuleiro tabCopia = new Tabuleiro(tab);
 		assertAll("Peças devem ser iguais",
-				() -> assertEquals(tabCopia.getPeca(0, 0), PecaEnum.O),
-				() -> assertEquals(tabCopia.getPeca(0, 1), PecaEnum.X),
-				() -> assertEquals(tabCopia.getPeca(1, 0), PecaEnum.O),
+				() -> assertEquals(tabCopia.getPeca(0, 0), PecaEnum.O, "[0, 0] = O"),
+				() -> assertEquals(tabCopia.getPeca(0, 1), PecaEnum.X, "[0, 1] = X"),
+				() -> assertEquals(tabCopia.getPeca(1, 0), PecaEnum.O, "[1, 0] = O"),
 				() -> assertNull(tabCopia.getPeca(2, 1)),
 				() -> assertNull(tabCopia.getPeca(0, 2)),
 				() -> assertNull(tabCopia.getPeca(2, 2)),
-				() -> assertEquals(tabCopia.getPeca(2, 0), PecaEnum.O)
+				() -> assertEquals(tabCopia.getPeca(2, 0), PecaEnum.O, "[2, 0] = O")
 				);
 	}
 
