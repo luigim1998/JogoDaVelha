@@ -22,15 +22,13 @@ Jogada jogada;
 	
 	@BeforeAll
 	void init() throws Exception {
-		PecaEnum[][] mat = new PecaEnum[3][3];
-		mat[0][0] = PecaEnum.X;
-		mat[0][1] = PecaEnum.O;
-		mat[0][2] = PecaEnum.X;
-		mat[1][0] = PecaEnum.O;
-		mat[1][1] = PecaEnum.X;
-		mat[1][2] = PecaEnum.O;
 		Tabuleiro tab = new Tabuleiro();
-		tab.setMatriz(mat);
+		tab.setPeca(0, 0, PecaEnum.X);
+		tab.setPeca(0, 1, PecaEnum.O);
+		tab.setPeca(0, 2, PecaEnum.X);
+		tab.setPeca(1, 0, PecaEnum.O);
+		tab.setPeca(1, 1, PecaEnum.X);
+		tab.setPeca(1, 2, PecaEnum.O);
 		jogada = new Jogada(tab, PecaEnum.X);
 	}
 

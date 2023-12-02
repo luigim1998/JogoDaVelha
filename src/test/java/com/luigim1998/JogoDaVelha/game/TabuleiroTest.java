@@ -2,6 +2,9 @@ package com.luigim1998.JogoDaVelha.game;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 class TabuleiroTest {
@@ -35,21 +38,39 @@ class TabuleiroTest {
 
 	@Test
 	void testSetMatriz3x3() {
-		PecaEnum[][] mat = new PecaEnum[3][3];
+		List<List<PecaEnum>> mat = new ArrayList<List<PecaEnum>>();
+		for (int linhaTab = 0; linhaTab < 3; linhaTab++) {
+			mat.add(new ArrayList<PecaEnum>());
+			for (int colunaTab = 0; colunaTab < 3; colunaTab++) {
+				mat.get(linhaTab).add(null);
+			}
+		}
 		Tabuleiro tab = new Tabuleiro();
 		assertDoesNotThrow(() -> tab.setMatriz(mat));
 	}
 	
 	@Test
 	void testSetMatriz4x3() {
-		PecaEnum[][] mat = new PecaEnum[4][3];
+		List<List<PecaEnum>> mat = new ArrayList<List<PecaEnum>>();
+		for (int linhaTab = 0; linhaTab < 4; linhaTab++) {
+			mat.add(new ArrayList<PecaEnum>());
+			for (int colunaTab = 0; colunaTab < 3; colunaTab++) {
+				mat.get(linhaTab).add(null);
+			}
+		}
 		Tabuleiro tab = new Tabuleiro();
 		assertThrows(IllegalArgumentException.class, () -> tab.setMatriz(mat));
 	}
 	
 	@Test
 	void testSetMatriz3x4() {
-		PecaEnum[][] mat = new PecaEnum[3][4];
+		List<List<PecaEnum>> mat = new ArrayList<List<PecaEnum>>();
+		for (int linhaTab = 0; linhaTab < 3; linhaTab++) {
+			mat.add(new ArrayList<PecaEnum>());
+			for (int colunaTab = 0; colunaTab < 4; colunaTab++) {
+				mat.get(linhaTab).add(null);
+			}
+		}
 		Tabuleiro tab = new Tabuleiro();
 		assertThrows(IllegalArgumentException.class, () -> tab.setMatriz(mat));
 	}

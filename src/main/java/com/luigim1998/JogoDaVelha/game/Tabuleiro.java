@@ -1,21 +1,28 @@
 package com.luigim1998.JogoDaVelha.game;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.StringJoiner;
 
 /**
  * Objeto que representa o tabuleiro da jogada.
  */
 public class Tabuleiro {
-	private PecaEnum[][] matriz;
+	private List<List<PecaEnum>> matriz;
 	
 	/**
 	 * Cria um tabuleiro 3x3 de valores null.
 	 */
 	public Tabuleiro() {
-		this.matriz = new PecaEnum[3][3];
+		this.matriz = new ArrayList<List<PecaEnum>>();
+		
+		for (int linhaTab = 0; linhaTab < 3; linhaTab++) {
+			this.matriz.add(new ArrayList<PecaEnum>());
+			for (int colunaTab = 0; colunaTab < 3; colunaTab++) {
+				this.matriz.get(linhaTab).add(null);
+			}
+		}
 	}
 	
 	/**
@@ -23,30 +30,28 @@ public class Tabuleiro {
 	 * @param original Tabuleiro original para ser copiado.
 	 */
 	public Tabuleiro(Tabuleiro original) {
-		this.matriz = new PecaEnum[3][3];
+		this.matriz = new ArrayList<List<PecaEnum>>();
 
 		for (int linhaTab = 0; linhaTab < 3; linhaTab++) {
-			for (int colunaTab = 0; colunaTab < 3; colunaTab++) {
-				this.matriz[linhaTab][colunaTab] = original.matriz[linhaTab][colunaTab];
-			}
+			this.matriz.add( new ArrayList<PecaEnum>(original.matriz.get(linhaTab)) );
 		}
 	}
 
 	/** Retorna a matriz do tabuleiro.
 	 * @return Matriz do tabuleiro.
 	 */
-	public PecaEnum[][] getMatriz() {
+	public List<List<PecaEnum>> getMatriz() {
 		return this.matriz;
 	}
 
 	/** Muda a matriz do tabuleiro pela matriz no parâmetro, sem criar cópia da matriz.
 	 * @param matrizPecas Nova matriz.
 	 */
-	public void setMatriz(PecaEnum[][] matrizPecas) {
-		if (matrizPecas.length != 3) {
+	public void setMatriz(List<List<PecaEnum>> matrizPecas) {
+		if (matrizPecas.size() != 3) {
 			throw new IllegalArgumentException("A matriz não pode ter uma quantidade diferente de três linhas.");
 		}
-		if (matrizPecas[0].length != 3 || matrizPecas[1].length != 3 || matrizPecas[2].length != 3) {
+		if (matrizPecas.get(0).size() != 3 || matrizPecas.get(1).size() != 3 || matrizPecas.get(2).size() != 3) {
 			throw new IllegalArgumentException("As linhas da matriz não podem ter uma quantidade diferente de três colunas.");
 		}
 		this.matriz = matrizPecas;
@@ -58,7 +63,7 @@ public class Tabuleiro {
 	 * @return PecaEnum da linha e coluna dada.
 	 */
 	public PecaEnum getPeca(int linha, int coluna) {
-		return this.matriz[linha][coluna];
+		return this.matriz.get(linha).get(coluna);
 	}
 	
 	/** Muda a PecaEnum da linha e coluna dada no parâmetro pela PecaEnum no parâmetro.
@@ -68,16 +73,13 @@ public class Tabuleiro {
 	 * @return Referência do tabuleiro.
 	 */
 	public Tabuleiro setPeca(int linha, int coluna, PecaEnum peca) {
-		this.matriz[linha][coluna] = peca;
+		this.matriz.get(linha).set(coluna, peca);
 		return this;
 	}
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.deepHashCode(matriz);
-		return result;
+		return Objects.hash(matriz);
 	}
 
 	@Override
@@ -89,7 +91,7 @@ public class Tabuleiro {
 		if (getClass() != obj.getClass())
 			return false;
 		Tabuleiro other = (Tabuleiro) obj;
-		return Arrays.deepEquals(matriz, other.matriz);
+		return Objects.equals(matriz, other.matriz);
 	}
 
 	@Override
@@ -97,9 +99,9 @@ public class Tabuleiro {
 		StringJoiner texto = new StringJoiner(",");
 		List<StringBuilder> linhas = new ArrayList<StringBuilder>();
 
-		for (int linha = 0; linha < matriz.length; linha++) {
+		for (int linha = 0; linha < this.matriz.size(); linha++) {
 			linhas.add(new StringBuilder(3));
-			for (int peca = 0; peca < matriz[linha].length; peca++) {
+			for (int peca = 0; peca < this.matriz.get(linha).size(); peca++) {
 				linhas.get(linha).append(imprimirPeca(linha, peca));
 			}
 		}
@@ -114,6 +116,6 @@ public class Tabuleiro {
 	 * @return Retorna texto da peça.
 	 */
 	public String imprimirPeca(int linha, int coluna) {
-		return matriz[linha][coluna] == null ? "-" : matriz[linha][coluna].toString();
+		return this.matriz.get(linha).get(coluna) == null ? "-" : this.matriz.get(linha).get(coluna).toString();
 	};
 }

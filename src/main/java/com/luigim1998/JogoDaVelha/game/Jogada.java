@@ -206,8 +206,8 @@ public class Jogada implements Comparable<Jogada>{
 	public void preverProximasJogada() {
 		List<Jogada> jogadas = new ArrayList<Jogada>();
 
-		for (int linha = 0; linha < this.tabuleiro.getMatriz().length; linha++) {
-			for (int coluna = 0; coluna < this.tabuleiro.getMatriz()[linha].length; coluna++) {
+		for (int linha = 0; linha < this.tabuleiro.getMatriz().size(); linha++) {
+			for (int coluna = 0; coluna < this.tabuleiro.getMatriz().get(linha).size(); coluna++) {
 				if (this.tabuleiro.getPeca(linha, coluna) == null) {
 					jogadas.add(new Jogada(this, PecaEnum.pecaOposta(jogadorAtual), linha, coluna));
 				}

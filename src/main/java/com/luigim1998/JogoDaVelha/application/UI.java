@@ -88,9 +88,9 @@ public class UI {
 		StringBuilder texto = new StringBuilder(40);
 		Tabuleiro tab = jogada.getTabuleiro();
 
-		for (int linha = 0; linha < tab.getMatriz().length; linha++) {
+		for (int linha = 0; linha < tab.getMatriz().size(); linha++) {
 			texto.append(" ".repeat(indentacao));
-			for (int peca = 0; peca < tab.getMatriz()[linha].length; peca++) {
+			for (int peca = 0; peca < tab.getMatriz().get(linha).size(); peca++) {
 				texto.append(tab.imprimirPeca(linha, peca));
 			}
 			texto.append("\n");
